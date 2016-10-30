@@ -10,12 +10,13 @@ class Token : public BaseShell{
     
     private:
         char const* command[]; 
+        int successFlag; 
     public: 
         Token(char const* argv[]){
            command = argv; 
         }
 
-      int execute(){  
+      void execute(){  
         pid_t pid;
         pid_t waitid; 
         int status; 
@@ -25,6 +26,7 @@ class Token : public BaseShell{
         //There was an error during fork
         if (pid < 0) 
         {
+            successFlag = 0; 
            perror("There was an error");
         } 
         else if (pid == 0) 
@@ -33,6 +35,7 @@ class Token : public BaseShell{
          if (execvp(command[0], (char**)command) < 0) 
          { 
             //error at execvp
+            successFlag = 0; 
            perror("There was an error executing the process");
          }
          exit(EXIT_FAILURE);
@@ -44,6 +47,7 @@ class Token : public BaseShell{
             {
               waitid = waitpid(pid, &status, WUNTRACED | WCONTINUED);
               if(waitid == -1){
+                  successFlag = 0; 
                   perror("Error in parent process")
                   exit(EXIT_FAILURE);
               }
@@ -51,8 +55,8 @@ class Token : public BaseShell{
             //when child exits or ternimated by signal call stop waiting
             while (!WIFEXITED(status) && !WIFSIGNALED(status));
         }
-        
+        //use this flag to determine whether the process was a sucess
+        successFlag = 1; 
     }
-    //if sucessfull return 1 
-    return 1; 
+   
 }

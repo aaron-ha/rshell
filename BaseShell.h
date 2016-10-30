@@ -1,5 +1,8 @@
+#ifndef BASESHELL_H
+#define BASESHELL_H
 class BaseShell{
     
-    virtual int execute() = 0; 
+    virtual void execute() = 0; 
     
 }
+#endif // PARSER
