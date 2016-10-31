@@ -1,5 +1,6 @@
 #include "BasehShell.h"
-class TokenComposite : public BaseShell {
+class TokenComposite : public BaseShell 
+{
     
     private: 
         string argv; 
@@ -8,13 +9,19 @@ class TokenComposite : public BaseShell {
     public: 
     //I'm hoping that the parser will be able to parse the String input into these objects
     
-    void shelloop(){
-        
+    void shelloop()
+    {
+         
         while(1){
             std::cout << "$ " << std::endl;
             
             //get user input
             std::cin >> argv; 
+            
+            //if the user in types in exit (we can change that if we want) exit the loop
+            if(argv == "exit"){
+               break; 
+            }
             
             //pass argument into parser
             parser(argv); 
@@ -26,14 +33,18 @@ class TokenComposite : public BaseShell {
             // commands = parser.SomeFunctionThatReturnsVector
             
             //will iterate through vector container calling execute on the children
-            execute(); 
-            
-            
-            
-        
+            execute();
+                
+                
         }
     }
     //this will iterate through the container of token objects and call execute on them
-    void execute(){};
+    void execute()
+    {
+        for(std::vector<BaseShell*>::iterator it = commands.begin() ; it != commands.end(); ++it)
+        {
+            *it->execute();
+        }
+    }
     
 }

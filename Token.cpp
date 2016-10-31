@@ -6,19 +6,22 @@
 #include <string.h>
 #include "BaseShell.h"
 
-class Token : public BaseShell{
+class Token : public BaseShell
+{
     
     private:
         char const* command[]; 
         int successFlag; 
     public: 
-        Token(char const* argv[]){
+        Token(char const* argv[])
+        {
            command = argv; 
         }
 
-      void execute(){  
+      void execute()
+      {  
         pid_t pid;
-        pid_t waitid; 
+        pid_t waitId; 
         int status; 
         
         //forks into two processes 
@@ -27,7 +30,7 @@ class Token : public BaseShell{
         if (pid < 0) 
         {
             successFlag = 0; 
-           perror("There was an error");
+            perror("There was an error");
         } 
         else if (pid == 0) 
         {
@@ -45,7 +48,7 @@ class Token : public BaseShell{
         {
             do 
             {
-              waitid = waitpid(pid, &status, WUNTRACED | WCONTINUED);
+              waitId = waitpid(pid, &status, WUNTRACED | WCONTINUED);
               if(waitid == -1){
                   successFlag = 0; 
                   perror("Error in parent process")
