@@ -6,23 +6,23 @@
 #include <string>
 #include <vector>
 #include <iostream>
-//#include "Parser.cpp"
+#include "Parser.h"
 
 class TokenComposite : public BaseShell 
 {
     
     private: 
         std::string argv; 
-        //Parser parser; 
-        //std::vector<BaseShell*> commands; 
+        Parser parser; 
         char *buffer; 
+        std::vector<char> connectors;
+        
     public: 
-    std::vector<BaseShell*> commands;
-    std::vector<char> connectors;
-    
-    //TokenComposite();
-    void shelloop();
-    //this will iterate through the container of token objects and call execute on them
-    void execute();
+        std::vector<BaseShell*> commands;
+        TokenComposite(){};
+        void shelloop();
+        void execute();
+        //this will iterate through the container of token objects and call execute on them
+        
 }; 
 #endif

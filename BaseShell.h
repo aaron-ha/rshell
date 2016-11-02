@@ -4,8 +4,7 @@
 class BaseShell{
    
     public: 
-    int successFlag; 
-    std::vector<char>connectors; 
+    int successFlag;  
     virtual void execute() = 0; 
     
 }; 

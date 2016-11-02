@@ -11,7 +11,7 @@ int main()
   
    const char* cmd1[] = {"echo", "-apples", NULL}; 
    const char* cmd2[] = {"echo", "test2", NULL}; 
-   const char* cmd3[] = {"echo", "test3", NULL}; 
+   const char* cmd3[] = {"ls", NULL}; 
   
    Token* tk1 = new Token(cmd1); 
    Token* tk2 = new Token(cmd2); 
@@ -23,26 +23,25 @@ int main()
    
    tokens->execute(); 
   
-    /*string command;
+    string command;
     //Take in user input for RShell in the form of char*
     // ex: ls -a; echo meow
-    cout << "Command: ";
+    /*cout << "Command: ";
     getline(cin, command);
-    cout << command << endl;
     
     Parser* parse = new Parser(command);
     vector<string> myVector = parse->divideString(command);
     TokenComposite* tokens = new TokenComposite();
     vector<Token*> cmdList = parse->cmdsToVector();
-    // const char** cmd1 = parse->makePtArr(myVector.at(0));
+    //const char** cmd1 = parse->makePtArr(myVector.at(0));
     
     for(int i = 0; i < cmdList.size(); i++){
         tokens->commands.push_back(cmdList.at(i));
     }
     
-    // Token* tk1 = new Token(cmd1);
+    //Token* tk1 = new Token(cmd1);
 
-    // tokens->commands.push_back(tk1);
+    //tokens->commands.push_back(tk1);
 
     tokens->execute();*/
 }
