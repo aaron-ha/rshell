@@ -5,25 +5,17 @@
 #include <sys/wait.h>
 #include <string.h>
 #include "BaseShell.h"
+#include "Token.h"
 
-class Token : public BaseShell
-{
-    
-    private:
-        char const* command[]; 
-        int successFlag; 
-    public: 
-        Token(char const* argv[])
-        {
-           command = argv; 
-        }
 
-      void execute()
+    Token::Token(const char** argv) : command(argv)
+    {
+    }
+      void Token::execute()
       {  
         pid_t pid;
         pid_t waitId; 
         int status; 
-        
         //forks into two processes 
         pid = fork();
         //There was an error during fork
@@ -49,9 +41,9 @@ class Token : public BaseShell
             do 
             {
               waitId = waitpid(pid, &status, WUNTRACED | WCONTINUED);
-              if(waitid == -1){
+              if(waitId == -1){
                   successFlag = 0; 
-                  perror("Error in parent process")
+                  perror("Error in parent process");
                   exit(EXIT_FAILURE);
               }
             } 
@@ -62,4 +54,3 @@ class Token : public BaseShell
         successFlag = 1; 
     }
    
-}
