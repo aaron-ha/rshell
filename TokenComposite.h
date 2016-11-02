@@ -18,7 +18,7 @@ class TokenComposite : public BaseShell
         char *buffer; 
     public: 
     std::vector<BaseShell*> commands;
-    
+    std::vector<char> connectors;
     
     //TokenComposite();
     void shelloop();

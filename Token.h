@@ -13,9 +13,10 @@ class Token : public BaseShell
     
     private:
         const char** command; 
-        int successFlag; 
+        
     public: 
-        Token(const char**); 
-        void execute(); 
+        Token(const char** argv) : command(argv) {};
+        void execute();
+        int successFlag; 
 }; 
 #endif

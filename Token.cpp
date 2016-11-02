@@ -1,18 +1,11 @@
-#include <iostream>
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <string.h>
 #include "BaseShell.h"
 #include "Token.h"
 
 
-    Token::Token(const char** argv) : command(argv)
-    {
-    }
+    
       void Token::execute()
       {  
+       
         pid_t pid;
         pid_t waitId; 
         int status; 

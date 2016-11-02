@@ -26,7 +26,7 @@
             //parser(argv); 
             
             
-            // commands = parser.SomeFunctionThatReturnsVector
+            //commands = parser.cmdToVector(); 
             
             //will iterate through vector container calling execute on the children
             execute();
@@ -37,9 +37,50 @@
     //this will iterate through the container of token objects and call execute on them
     void TokenComposite::execute()
     {
+        connectors.push_back(';');
+        connectors.push_back(';');
+        int counter = 0; //this is so that we will execute the first time regardless of the connector after it. 
+        int connectorCounter = 0; 
+        int previousSuccessFlag; 
         for(std::vector<BaseShell*>::iterator it = commands.begin() ; it != commands.end(); ++it)
         {
-            (*it)->execute();
+           if(counter == 0)
+            {
+                (*it)->execute();
+                counter = 1; 
+                previousSuccessFlag = (*it)->successFlag;
+                std::cout << previousSuccessFlag << std::endl;
+            }
+            else if(connectors[connectorCounter] == ';')
+            {
+                (*it)->execute();
+                previousSuccessFlag = (*it)->successFlag;
+                connectorCounter++;
+                
+            }
+            else if(connectors[connectorCounter] == '|')
+            {
+                if(previousSuccessFlag == 1)
+                {
+                    break; 
+                }
+                else
+                {
+                    (*it)->execute();
+                    previousSuccessFlag = (*it)->successFlag;
+                }
+                connectorCounter++;
+            }
+            else
+            {
+                if(previousSuccessFlag == 1)
+                {
+                    (*it)->execute(); 
+                    previousSuccessFlag = (*it)->successFlag;
+                }
+                connectorCounter++;
+            }
+            
         }
     }
     

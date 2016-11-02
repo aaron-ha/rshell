@@ -1,91 +1,127 @@
-#ifndef PARSER
-#define PARSER
-#include <iostream>
-#include <vector>
-#include <cstring>
-#include <string>
-#include <algorithm>
+#include "Parser.h"
 
-using namespace std;
+Parser::Parser(string input) : command(input){}
 
-class Parser{
-public:
-    Parser(string input) : command(input){}
+vector<Token*> Parser::cmdsToVector(){
+    vector<Token*> listOfCmds;
+    Token* tk;
+    for(int i = 0; i < strContainer.size(); i++){
+//        cout << "token(makePtArr(strContainer.at(" << i<< ")):\t" << makePtArr(strContainer.at(i) << endl;
+        tk = new Token(makePtArr(strContainer.at(i)));
+        listOfCmds.push_back(tk);
+    }
+    return listOfCmds;
+}
 
-    void store();
-    void store(string str);
+vector<char> Parser::getChContainer(){
+    return connectorCont;
+}
 
-    //HELPER FUNCTIONS
-    void print();
+const char** Parser::makePtArr(string str){
+    int wordCount = numWords(str);
 
+    const char** list = new const char*[wordCount];
 
-private:
-    vector<string> strContainer;
-    string command;
-};
+    char* cpy;
+    string newStr = str;
 
-void Parser::print(){
-//    cout << endl << strContainer.at(0) << endl;
-    for(size_t i = 0; i < strContainer.size(); i++){
+    for(int i = 0; i < wordCount; i++){
+        for(int j = 0; j < newStr.length(); j++)
+            if(newStr[j] == ' '){
+                cpy = new char[j+1];
+                strcpy(cpy,  newStr.substr(0, j).c_str());
+                list[i] = cpy;
+                newStr = newStr.substr(j+1, newStr.length());
+                j = newStr.length();
+            }
+    }
+    newStr.append("\0");
+    cpy = new char[newStr.length()];
+    strcpy(cpy,  newStr.c_str());
+    list[wordCount-1] = cpy;
+
+    for(int x = 0; x < wordCount; x++){
+        cout << "list[" <<  x << "]:\t" << list[x] << endl;
+    }
+    return list;
+}
+
+void Parser::printContainer(){
+    cout << "String Container: " << endl;
+    for(size_t i = 0; i < strContainer.size(); i++)
         cout << i << ": " << strContainer.at(i) << endl;
-    }
-}
-
-void Parser::store(){
-    store(command);
-}
-
-void Parser::store(string str){
-    //remove spaces
-    str.erase(remove_if(str.begin(), str.end(), ::isspace), str.end());
-    cout << "new str: " << str << endl;
-    size_t found = str.find_first_of("#;&|");       // Here we want to check for multiple commands
-
-    string newStr;
-
-    if(found != string::npos){                                         //if found we want to find which commands
-        size_t pos_hash = str.find_first_of("#");
-        if(pos_hash != string::npos){
-            cout << "pos_hash: " << pos_hash << endl;
-            store(str.substr(0,pos_hash));
-        }
-
-        size_t pos_semi = str.find_first_of(";");
-        if(pos_semi != string::npos){
-            cout << "pos_semi: " << pos_semi << endl;
-            store(str.substr(0,pos_semi));
-        }
-
-        size_t pos_and = str.find_first_of("&");
-        if(pos_and != string::npos){
-            cout << "pos_and: " << pos_and << endl;
-            store(str.substr(0,pos_and));
-        }
-
-        size_t pos_or = str.find_first_of("|");
-        if(pos_or != string::npos){
-            cout << "pos_or: " << pos_or << endl;
-            store(str.substr(0,pos_or));
-        }
-    }
-    else{                                               //if not just push the string to the vector
-        cout << "Not found, will now push \"" << str << "\" to vector";
-        strContainer.push_back(str);
-    }
-
-    //find the special characters
-    //[1]# - Anything after the ‘#’ character will be a comment
-        //if # take substring of everything behind it first
-    //; - next command will always be executed
-        //separate the string into smaller sub strings
-    //&& - next command executes only if previous command is successful
-        //separate the string into smaller sub strings
-    //|| - next command executes only if previous command fails
-        //separate the string into smaller sub strings
-
-
 
 }
 
-#endif // PARSER
+void Parser::printConnectors(){
+    cout << "Connector Container: " << endl;
+    for(size_t i = 0; i < connectorCont.size(); i++)
+        cout << i << ":\t" << connectorCont.at(i) << endl;
+}
 
+vector<string> Parser::divideString(string str){
+    string newStr = str;
+
+    size_t hash_found = str.find_first_of('#');
+    if(hash_found != string::npos){
+        newStr = str.substr(0, hash_found);
+    }
+
+    cout << "newStr: " << newStr << endl;
+
+    for(int i = 0; i < newStr.length(); i++){
+        if(newStr[i] == ';'){
+            connectorCont.push_back(';');
+            strContainer.push_back(newStr.substr(0, i));
+            newStr = newStr.substr(i+1, newStr.length());
+            i = 0;
+        }
+        else if(newStr[i] == '&' && newStr[i+1] == '&'){
+            connectorCont.push_back('&');
+            strContainer.push_back(newStr.substr(0, i));
+            newStr = newStr.substr(i+2, newStr.length());
+            i = 0;
+        }
+        else if(newStr[i] == '|' && newStr[i+1] == '|'){
+            connectorCont.push_back('|');
+            strContainer.push_back(newStr.substr(0, i));
+            newStr = newStr.substr(i+2, newStr.length());
+            i = 0;
+        }
+    }
+    strContainer.push_back(newStr.substr(0, newStr.length()));
+    standardize();
+    return strContainer;
+}
+
+void Parser::standardize(){
+    cleanString();
+    reverseStr();
+    cleanString();
+    reverseStr();
+}
+
+void Parser::cleanString(){
+    for(int i = 0; i < strContainer.size(); i++){
+        for(int j = 0; j < strContainer.at(i).length(); j++){
+            size_t notSpace = strContainer.at(i).find_first_not_of(" ");
+            if(notSpace != string::npos){
+                strContainer.at(i) = strContainer.at(i).substr(notSpace, strContainer.at(i).length());
+            }
+        }
+    }
+}
+
+void Parser::reverseStr(){
+    for(int i = 0; i < strContainer.size(); i++)
+        reverse(strContainer.at(i).begin(), strContainer.at(i).end());
+}
+
+int Parser::numWords(string str){
+    int count = 0;
+    for(int i = 0; i < str.length(); i++)
+        if(str[i] == ' ')
+            count++;
+    count+=1;
+    return count;
+}
