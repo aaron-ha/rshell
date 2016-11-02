@@ -15,10 +15,11 @@ class TokenComposite : public BaseShell
         std::string argv; 
         Parser parser; 
         char *buffer; 
-        std::vector<char> connectors;
+        //std::vector<char> connectors;
         
     public: 
         std::vector<BaseShell*> commands;
+        std::vector<char> connectors;
         TokenComposite(){};
         void shelloop();
         void execute();

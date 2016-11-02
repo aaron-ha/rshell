@@ -6,10 +6,10 @@
 
 int main()
 {
-   TokenComposite* tokens = new TokenComposite(); 
+   /*TokenComposite* tokens = new TokenComposite(); 
   
   
-   const char* cmd1[] = {"echo", "-apples", NULL}; 
+   const char* cmd1[] = {"ls", "-apples", NULL}; 
    const char* cmd2[] = {"echo", "test2", NULL}; 
    const char* cmd3[] = {"ls", NULL}; 
   
@@ -21,12 +21,10 @@ int main()
    tokens->commands.push_back(tk2);
    tokens->commands.push_back(tk3);
    
-   tokens->execute(); 
+   tokens->execute(); */
   
-    string command;
-    //Take in user input for RShell in the form of char*
-    // ex: ls -a; echo meow
-    /*cout << "Command: ";
+    /*string command;
+    cout << "Command: ";
     getline(cin, command);
     
     Parser* parse = new Parser(command);
@@ -44,4 +42,26 @@ int main()
     //tokens->commands.push_back(tk1);
 
     tokens->execute();*/
+    
+    string command;
+    cout << "Command: ";
+    getline(cin, command);
+    cout << command << endl;
+    
+    Parser parse;
+    parse.parse(command);
+    
+    
+    TokenComposite* tokens = new TokenComposite();
+    tokens->connectors = parse.getChContainer();
+    cout << "Connector Container: " << endl;
+    for(size_t i = 0; i < tokens->connectors.size(); i++)
+        cout << i << ":\t" << tokens->connectors.at(i) << endl;
+    vector<Token*> cmdList = parse.cmdsToVector();
+    
+    for(int i = 0; i < cmdList.size(); i++){
+        tokens->commands.push_back(cmdList.at(i));
+    }
+    
+    tokens->execute();
 }

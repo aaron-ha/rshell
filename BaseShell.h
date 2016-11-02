@@ -4,7 +4,7 @@
 class BaseShell{
    
     public: 
-    int successFlag;  
+    bool successFlag = true; 
     virtual void execute() = 0; 
     
 }; 
