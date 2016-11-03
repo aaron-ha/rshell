@@ -31,7 +31,7 @@ void TokenComposite::shellLoop()
         TokenComposite* tokens = new TokenComposite();
         tokens->connectors = parse.getChContainer();
         vector<Token*> cmdList = parse.cmdsToVector(); //populate the vector of token objects
-        for(int i = 0; i < cmdList.size(); i++){
+        for(unsigned int i = 0; i < cmdList.size(); i++){
             tokens->commands.push_back(cmdList.at(i));
         }
         //execute the programs
