@@ -11,7 +11,7 @@ using namespace std;
 
 class Parser{
 public:
-    Parser();
+    Parser(){};
 
     void parse(string cmd);
 

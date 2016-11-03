@@ -1,7 +1,5 @@
 #include "Parser.h"
 
-Parser::Parser(){}
-
 //Parse function:
 //Parse breaks down the user inputted string by calling the divideString function
 void Parser::parse(string cmd){

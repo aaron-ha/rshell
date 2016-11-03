@@ -1,29 +1,34 @@
 #ifndef TOKENCOMPOSITE_H
 #define TOKENCOMPOSITE_H
 #include "BaseShell.h"
-//#include<unistd.h>
 #include <stdlib.h>
 #include <string>
 #include <vector>
+#include <sys/types.h>
+#include <pwd.h>
+#include <unistd.h>
 #include <iostream>
 #include "Parser.h"
+#include "Token.h"
 
-class TokenComposite : public BaseShell 
+class TokenComposite : public BaseShell
 {
-    
-    private: 
-        std::string command; 
-        Parser parser; 
-        struct passwd *login; 
-        char hostname[128];  
+
+    private:
+        std::string command;
+        Parser parser;
+        struct passwd *login;
+        char hostname[128];
         std::vector<char> connectors;
-        
-    public: 
+        static int exitHit; 
+
+    public:
         std::vector<BaseShell*> commands;
-        TokenComposite(){};
         void shellLoop();
         void execute();
-        //this will iterate through the container of token objects and call execute on them
-        
-}; 
-#endif
+
+        ~TokenComposite();
+        TokenComposite();
+};
+
+#endif // TOKENCOMPOSITE_H

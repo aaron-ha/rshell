@@ -8,14 +8,16 @@
 #include <string.h>
 #include "BaseShell.h"
 
+using namespace std;
+
 class Token : public BaseShell
 {
-    
-    private:
-        const char** command; 
-        
-    public: 
-        Token(const char** argv) : command(argv) {};
-        void execute();
-}; 
-#endif
+
+private:
+    //const char** command;
+public:
+    Token(const char** argv);
+    void execute();
+};
+
+#endif // TOKEN_H
