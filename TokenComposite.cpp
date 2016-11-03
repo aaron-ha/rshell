@@ -2,36 +2,46 @@
 #include <stdlib.h>
 #include <string>
 #include <vector>
+#include <sys/types.h>
+#include <pwd.h>
+#include <unistd.h>
 #include <iostream>
 #include "Parser.h"
 #include "Token.h"
 #include "TokenComposite.h"
 
-void TokenComposite::shelloop()
+void TokenComposite::shellLoop()
 {
-    
+    login = getpwuid(getuid());
+    gethostname(hostname, sizeof hostname); 
     while(1){
-        std::cout << "$ " << std::endl;
+        std::cout << (login->pw_name); 
+        std::cout << "@"; 
+        std::cout << hostname << "$"; 
         
             //get user input
-        getline(cin, argv); 
+        getline(cin, command); 
         
             //if the user in types in exit (we can change that if we want) exit the loop
-        if(argv == "exit"){
+        if(command == "exit"){
             break; 
         }
-     
-            //pass argument into parser
-            //parse(argv); 
-     
-     
-            //commands = parse.cmdToVector(); 
-     
-            //will iterate through vector container calling execute on the children
-     execute();
-     
-     
-    }
+        Parser parse;
+        parse.parse(command);
+        TokenComposite* tokens = new TokenComposite();
+        tokens->connectors = parse.getChContainer();
+
+    
+        vector<Token*> cmdList = parse.cmdsToVector();
+    
+        for(int i = 0; i < cmdList.size(); i++){
+            tokens->commands.push_back(cmdList.at(i));
+        }
+    
+        tokens->execute();
+            
+           
+     }
 }
     //this will iterate through the container of token objects and call execute on them
 void TokenComposite::execute()

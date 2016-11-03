@@ -12,16 +12,16 @@ class TokenComposite : public BaseShell
 {
     
     private: 
-        std::string argv; 
+        std::string command; 
         Parser parser; 
-        char *buffer; 
-        //std::vector<char> connectors;
+        struct passwd *login; 
+        char hostname[128];  
+        std::vector<char> connectors;
         
     public: 
         std::vector<BaseShell*> commands;
-        std::vector<char> connectors;
         TokenComposite(){};
-        void shelloop();
+        void shellLoop();
         void execute();
         //this will iterate through the container of token objects and call execute on them
         

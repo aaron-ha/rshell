@@ -4,8 +4,11 @@
 #include "Token.cpp"
 #include "Parser.cpp"
 
+
 int main()
 {
+    TokenComposite token; 
+    token.shellLoop(); 
    /*TokenComposite* tokens = new TokenComposite(); 
   
   
@@ -41,7 +44,7 @@ int main()
 
     //tokens->commands.push_back(tk1);
 
-    tokens->execute();*/
+    tokens->execute();
     
     string command;
     cout << "Command: ";
@@ -63,5 +66,5 @@ int main()
         tokens->commands.push_back(cmdList.at(i));
     }
     
-    tokens->execute();
+    tokens->execute();*/
 }
