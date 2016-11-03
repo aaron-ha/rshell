@@ -6,17 +6,16 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <string.h>
-#include "BaseShell.h"
+#include "baseshell.h"
 
-using namespace std;
-
+//Token Class that will encapsulate the individual commands 
 class Token : public BaseShell
 {
-
-private:
-    //const char** command;
 public:
+    //constructor will take the character pointer array for us in execvp
     Token(const char** argv);
+    
+    //will execute the individual program
     void execute();
 };
 

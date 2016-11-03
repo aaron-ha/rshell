@@ -1,4 +1,4 @@
-#include "Parser.h"
+#include "parser.h"
 
 //Parse function:
 //Parse breaks down the user inputted string by calling the divideString function

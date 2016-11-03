@@ -5,7 +5,7 @@
 #include <cstring>
 #include <string>
 #include <algorithm>
-#include "Token.h"
+#include "token.h"
 
 using namespace std;
 
