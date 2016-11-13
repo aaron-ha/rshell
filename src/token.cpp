@@ -42,3 +42,47 @@ void Token::execute(){
         while (!WIFEXITED(status) && !WIFSIGNALED(status));
     }
 }
+
+void Token:test(){
+    struct stat sb; 
+    if(strcmp(command[1], "-e")){
+        if (stat(argv[2], &sb) == -1) {
+            perror("File Status:");
+            exit(EXIT_FAILURE);
+            std::cout << "(False)" << std::endl; 
+            successFlag = false;
+            exit(EXIT_FAILURE);
+        }
+           std:: cout << "(True)" << std::endl; 
+    }
+    else if(strcmp(command[2], "-f")){
+        if (stat(argv[2], &sb) == -1) {
+            perror("File Status:");
+            exit(EXIT_FAILURE);
+            std::cout << "(False)" << std::endl; 
+            successFlag = false;
+            exit(EXIT_FAILURE);
+        }
+        if(S_ISREG(sb.st_mode)){
+            std::cout << "(True)" << std::endl; 
+        }
+        else{
+            std::cout << "(False)" << std::endl; 
+        }
+    }
+    else if(strcmp(command[2], "-d")){
+        if (stat(argv[2], &sb) == -1) {
+            perror("File Status:");
+            exit(EXIT_FAILURE);
+            std::cout << "(False)" << std::endl; 
+            successFlag = false;
+            exit(EXIT_FAILURE);
+        }
+        if(S_ISDIR(sb.st_mode)){
+            std::cout << "(True)" << std::endl; 
+        }
+        else{
+            std::cout << "(False)" << std::endl; 
+        }
+    }
+}

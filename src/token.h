@@ -18,6 +18,8 @@ public:
     
     //will execute the individual program
     void execute();
+    //will test function
+    void test();
 };
 
 #endif // TOKEN_H
