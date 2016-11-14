@@ -7,14 +7,17 @@
 #include <sys/stat.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "token.cpp"
+#include "tokencomposite.cpp"
+#include "parser.cpp"
 
 using namespace std;
 
 int main() //call loop that will handle all the processes 
 {
-    /*TokenComposite token;
-    token.shellLoop();
-    return 0;*/
+    //TokenComposite token;
+   // token.shellLoop();
+   // return 0;
     struct stat sb; 
     const char* argv[] = {"test", "/home/ubuntu/workspace/src/main.cpp"};  
     
@@ -28,7 +31,7 @@ int main() //call loop that will handle all the processes
     else if(S_ISDIR(sb.st_mode)){
         std::cout << "directory" << std::endl; 
     }
-    
+
     
     
     
