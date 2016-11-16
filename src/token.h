@@ -19,7 +19,8 @@ public:
     //will execute the individual program
     void execute();
     //will test function
-    void test();
+    void test(const char**);
+    
 };
 
 #endif // TOKEN_H

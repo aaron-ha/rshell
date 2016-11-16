@@ -15,25 +15,22 @@ using namespace std;
 
 int main() //call loop that will handle all the processes 
 {
-    //TokenComposite token;
-   // token.shellLoop();
-   // return 0;
-    struct stat sb; 
-    const char* argv[] = {"test", "/home/ubuntu/workspace/src/main.cpp"};  
+   TokenComposite token;
+   token.shellLoop();
+   return 0;
+    /*struct stat sb; 
+    const char* argv[] = {"test", "-e","/home/ubuntu/workspace/src"};  
     
-     if (stat(argv[1], &sb) == -1) {
+     if (stat(argv[2], &sb) == -1) {
                perror("stat");
                exit(EXIT_FAILURE);
            }
-     if(S_ISREG(sb.st_mode)){
+    if(S_ISREG(sb.st_mode)){
         std::cout << "true" << std::endl; 
     }
     else if(S_ISDIR(sb.st_mode)){
         std::cout << "directory" << std::endl; 
-    }
-
-    
-    
+    }*/
     
 }
 

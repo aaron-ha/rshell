@@ -6,7 +6,6 @@
 #include <string>
 #include <algorithm>
 #include "token.h"
-
 using namespace std;
 
 class Parser{
@@ -17,7 +16,7 @@ public:
 
     vector<Token*> cmdsToVector();
     vector<char> getChContainer();
-
+    int numWords(string str);
     //HELPER FUNCTIONS
     void printContainer();
     void printConnectors();
@@ -31,6 +30,6 @@ private:
     void standardize();
     void reverseStr();
     void cleanString();
-    int numWords(string str);
+    
 };
 #endif // PARSER

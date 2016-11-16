@@ -10,7 +10,8 @@ void Token::execute(){
     pid_t waitId;
     int status;
     
-    if(strcmp(command[0], "test") || strcmp(command[0], "[")){
+    
+    if(strcmp(command[0], "test") == 0 || strcmp(command[0], "[") == 0){
         test(command); 
     }
     else{
@@ -49,56 +50,66 @@ void Token::execute(){
     
 }
 
-void Token:test(){
+void Token::test(const char** command){
     struct stat sb; 
-    if(strcmp(command[1], "-e")){
-        if (stat(argv[2], &sb) == -1) {
-            perror("File Status:");
-            exit(EXIT_FAILURE);
-            std::cout << "(False)" << std::endl; 
-            successFlag = false;
-            exit(EXIT_FAILURE);
-        }
-           std:: cout << "(True)" << std::endl; 
+    
+    int sizeOfCommand = 0;  
+    for(int i = 0; command[i]!= NULL; i++){
+        sizeOfCommand++; 
     }
-    else if(strcmp(command[1], "-f")){
-        if (stat(argv[2], &sb) == -1) {
-            perror("File Status:");
-            exit(EXIT_FAILURE);
+    
+    if(strcmp(command[0], "[") == 0 && strcmp(command[sizeOfCommand-1], "]") != 0){
+        std::cout << "bash: [: missing ']" << std::endl;
+    }
+    else if(strcmp(command[1], "-e") == 0){
+        if (stat(command[2], &sb) == -1) {
             std::cout << "(False)" << std::endl; 
             successFlag = false;
-            exit(EXIT_FAILURE);
+            perror("File Status:");
         }
-        if(S_ISREG(sb.st_mode)){
+        else{
+            std::cout << "(True)" << std::endl; 
+        }
+        
+    }
+    else if(strcmp(command[1], "-f" ) == 0){
+        if (stat(command[2], &sb) == -1) {
+            std::cout << "(False)" << std::endl; 
+            successFlag = false;
+            perror("File Status:");
+        }
+        else if(S_ISREG(sb.st_mode)){
             std::cout << "(True)" << std::endl; 
         }
         else{
             std::cout << "(False)" << std::endl; 
         }
+
     }
-    else if(strcmp(command[1], "-d")){
-        if (stat(argv[2], &sb) == -1) {
-            perror("File Status:");
-            exit(EXIT_FAILURE);
+    else if(strcmp(command[1], "-d" ) == 0){
+        if (stat(command[2], &sb) == -1) {
             std::cout << "(False)" << std::endl; 
             successFlag = false;
-            exit(EXIT_FAILURE);
+            perror("File Status:");
+            
         }
-        if(S_ISDIR(sb.st_mode)){
+        else if(S_ISDIR(sb.st_mode)){
             std::cout << "(True)" << std::endl; 
         }
         else{
             std::cout << "(False)" << std::endl; 
         }
+       
     }
     else{
-      if (stat(argv[1], &sb) == -1) {
-            perror("File Status:");
-            exit(EXIT_FAILURE);
+      if (stat(command[1], &sb) == -1) {
             std::cout << "(False)" << std::endl; 
             successFlag = false;
-            exit(EXIT_FAILURE);
+            perror("File Status:");
+            
         }
+        else{
            std:: cout << "(True)" << std::endl; 
+        }
     }
 }
