@@ -1,4 +1,5 @@
 #include "token.h"
+Token::Token(){}
 
 Token::Token(const char** argv) { //take in parsed argument 
     command = argv; 

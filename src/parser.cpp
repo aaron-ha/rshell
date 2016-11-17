@@ -5,10 +5,45 @@
 void Parser::parse(string cmd){
     this->divideString(cmd);
 }
+//OLD---------------------------------------------------------------------------------------------------
+// //Getter for the connector container
+// vector<char> Parser::getChContainer(){
+//     return connectorCont;
+// }
 
+// //Commands To Vector function:
+// //cmdsToVector calls the makePtArr function for every element in the vector<string> container
+// //then returns a new vector of tokens
+// vector<Token*> Parser::cmdsToVector(){
+//     vector<Token*> listOfCmds;
+//     Token* tk;
+//     for(unsigned int i = 0; i < strContainer.size(); i++){
+//         tk = new Token(makePtArr(strContainer.at(i)));
+//         listOfCmds.push_back(tk);
+//     }
+//     return listOfCmds;
+// }
+//OLD----------------------------------------------------------------------------------------------------------------
+
+//NEW----------------------------------------------------------------------------------------------------------------
 //Getter for the connector container
 vector<char> Parser::getChContainer(){
-    return connectorCont;
+    vector<char> newCont;
+    for(unsigned int i = 0; i < connectorCont.size(); i++){
+        if (connectorCont[i] == '(')
+            while(connectorCont[i] != ')')
+                i++;
+        else
+            newCont.push_back(connectorCont[i]);
+    }
+    return newCont;
+}
+
+bool Parser::checkForParenthesis(vector<char> myVector){
+    for(unsigned i = 0; i < myVector.size(); i++)
+        if (myVector[i] == '(')
+            return true;
+    return false;
 }
 
 //Commands To Vector function:
@@ -17,13 +52,44 @@ vector<char> Parser::getChContainer(){
 vector<Token*> Parser::cmdsToVector(){
     vector<Token*> listOfCmds;
     Token* tk;
-    for(unsigned int i = 0; i < strContainer.size(); i++){
-        tk = new Token(makePtArr(strContainer.at(i)));
-        listOfCmds.push_back(tk);
+
+    if(checkForParenthesis(connectorCont) == false){
+        for(unsigned int i = 0; i < strContainer.size(); i++){
+            tk = new Token(makePtArr(strContainer.at(i)));
+            listOfCmds.push_back(tk);
+        }
+    }
+    else{
+        int currentToken = 0;
+
+        for(int i = 0; i < connectorCont.size(); i++){
+            if(connectorCont[i] == '('){
+                i++;
+                tk = new Token();
+                while(connectorCont[i] != ')'){
+                    tk->connectors.push_back(connectorCont[i]);
+                    tk->tokens.push_back(makePtArr(strContainer.at(currentToken)));
+                    currentToken++;
+                    i++;
+                }
+                tk->tokens.push_back(makePtArr(strContainer.at(currentToken)));
+                currentToken++;
+                listOfCmds.push_back(tk);
+            }
+            else{
+                if((connectorCont[i+1] != '(') && (connectorCont[i-1] != ')')){
+                    tk = new Token(makePtArr(strContainer.at(currentToken)));;
+                    currentToken++;
+                    listOfCmds.push_back(tk);                    
+                }
+            }
+
+        }
     }
     return listOfCmds;
 }
 
+//NEW----------------------------------------------------------------------------------------------------------------
 //make an Array of pointers function:
 //makePtArr takes a string and turns it into a character array pointer by
 //separating words from a string by using the space as a delimeter

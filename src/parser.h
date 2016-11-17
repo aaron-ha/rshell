@@ -31,5 +31,6 @@ private:
     void reverseStr();
     void cleanString();
     
+    bool checkForParenthesis(vector<char> myVector);
 };
 #endif // PARSER
