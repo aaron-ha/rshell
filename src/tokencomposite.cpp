@@ -25,6 +25,7 @@ void TokenComposite::shellLoop()
         if(command == "exit"){
             break;
         }
+        //loop
         //we pass the user string ito the parser
         Parser parse;
         parse.parse(command); //we then populate the connectors vector
@@ -36,6 +37,7 @@ void TokenComposite::shellLoop()
         }
         //execute the programs
         tokens->execute();
+        //loop
     }
 }
 //this will iterate through the container of token objects and call execute on them

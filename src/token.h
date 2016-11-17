@@ -21,6 +21,10 @@ public:
     //will test function
     void test(const char**);
     
+    //use these two member variables the parser is in parenthesis
+    vector<Token> tokens; 
+    vector<char> connectors; 
+    
 };
 
 #endif // TOKEN_H

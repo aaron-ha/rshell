@@ -34,6 +34,7 @@ private:
     std::vector<char> connectors;
         //static flag for exit command
     static int exitHit;
+    static bool compositeSuccess; 
 
 };
 
