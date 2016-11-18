@@ -125,14 +125,9 @@ void Token::executeTree(std::vector<Token*> commands){
     bool previousSuccessFlag; //this keep track whether the last command executed successfully 
     const char* ex  = "exit"; //exit command
     for(std::vector<Token*>::iterator it = commands.begin() ; it != commands.end(); ++it){
-        //if the user entered in the exit command set the flag to 1 so that it the program will end
-        if(strcmp(ex, (*it)->command[0]) == 0){
-            //exitHit = 1; 
-            tokenComposite.exitHit = 1; 
-            break; 
-        }
+        
         //this will be the first command which always executes
-        else if(counter == 0){
+        if(counter == 0){
             (*it)->execute();
             counter = 1;
             previousSuccessFlag = (*it)->successFlag;
@@ -148,11 +143,18 @@ void Token::executeTree(std::vector<Token*> commands){
         //if || the only execute if the previous command was not successfull 
         else if(Tkconnectors[connectorCounter] == '|'){
             if(previousSuccessFlag == 1){
-                break;
+                previousSuccessFlag = 1; 
             }
             else{
-                (*it)->execute();
-                previousSuccessFlag = (*it)->successFlag;
+                    //if the user entered in the exit command set the flag to 1 so that it the program will end
+                     if(strcmp(ex, (*it)->command[0]) == 0){
+                        tokenComposite.exitHit = 1; 
+                        break; 
+                     }
+                    else{
+                    (*it)->execute();
+                    previousSuccessFlag = (*it)->successFlag;
+                }
             }
             connectorCounter++;
         }

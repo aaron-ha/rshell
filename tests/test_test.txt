@@ -1,0 +1,19 @@
+test -e /home
+test -e main.cpp
+test -e deez
+test -f /home
+test -f main.cpp
+test -f deez
+test -d /home
+test -d main.cpp
+test -d deez
+[ -e home ]
+[ -e main.cpp ]
+[ -f main.cpp ]
+[ -f /home ]
+[ -d /home ]
+[ -d main.cpp ]
+test /home
+test main.cpp
+[ /home ]
+[ main.cpp ]

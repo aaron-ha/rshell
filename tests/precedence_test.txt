@@ -1,0 +1,11 @@
+(echo A && echo B) && echo C
+(echo A && echo B) || echo C
+(echo A && echo B) ; echo C
+(echo A)
+(echo A && ls -apples) && echo C
+(echo A && echo B) && (echo A && echo B)
+(test -e /home && echo path exisits) && echo A
+(test -f /home || echo A) echo B
+(test -e /home) && (test -e main.cpp)
+(exit)
+(echo A && echo B) ; exit

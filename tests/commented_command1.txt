@@ -1,1 +1,10 @@
 #echo test
+#echo hello && echo A
+echo hello #&& echo C 
+echo hello || echo B #echo command
+#(echo A && echo B)
+(echo A && echo B) #echo C
+(echo A && echo B) && echo A ; #exit
+#exit 
+echo A #exit
+(test -e /home) #exit

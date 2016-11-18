@@ -24,7 +24,7 @@ public:
     void execute();
     static int exitHit;
 private:
-        //user input
+    //user input
     std::string command;
     Parser parser;
         //user login
@@ -36,6 +36,8 @@ private:
         //static flag for exit command
    
     static bool compositeSuccess; 
+    bool validateString(string str); 
+    
 
 };
 

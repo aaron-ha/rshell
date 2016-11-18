@@ -51,8 +51,6 @@ bool Parser::checkForParenthesis(vector<char> myVector){
 //cmdsToVector calls the makePtArr function for every element in the vector<string> container
 //then returns a new vector of tokens
 vector<Token*> Parser::cmdsToVector(){
-    printContainer();
-    printConnectors();
     vector<Token*> listOfCmds;
     Token* tk;
     
@@ -78,14 +76,8 @@ vector<Token*> Parser::cmdsToVector(){
                 tk->tokens.push_back(new Token(makePtArr(strContainer.at(currentToken))));
                 currentToken++;
                 listOfCmds.push_back(tk);
-                cout << "line 80: " << listOfCmds.size() << endl;
             }
             else{
-                cout << "line 84: " << endl;
-                cout << "testing[i+1]: " << connectorCont[i+1] << "_\n";
-                cout << "testing[i-1]: " << connectorCont[i-1] << "_\n";
-                cout << "testing[i]: " << connectorCont[i] << "_\n";
-
                 if((connectorCont[i+1] != '(')){ //&& (connectorCont[i-1] != ')')){
                     tk = new Token(makePtArr(strContainer.at(currentToken)));;
                     currentToken++;
