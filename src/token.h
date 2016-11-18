@@ -17,7 +17,7 @@ class Token : public BaseShell
 public:
     //default
     Token();
-    
+    bool successFlag = true; 
     //constructor will take the character pointer array for us in execvp
     Token(const char** argv);
     

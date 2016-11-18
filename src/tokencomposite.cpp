@@ -32,14 +32,12 @@ void TokenComposite::shellLoop()
         TokenComposite* tkn = new TokenComposite();
         tkn->connectors = parse.getChContainer();
         vector<Token*> cmdList = parse.cmdsToVector(); //populate the vector of token objects
-      
        for(unsigned int i = 0; i < cmdList.size(); i++){
             tkn->commands.push_back(cmdList.at(i));
         }
-        std::cout << tkn->commands.at(0)->tokens.at(0)->command[0] << std::endl; 
+        std::cout << "Size of TokenComposites token vector: " << tkn->commands.size() << std::endl; 
         //execute the programs
         tkn->execute();
-        //loop
     }
 }
 //this will iterate through the container of token objects and call execute on them

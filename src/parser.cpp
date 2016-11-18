@@ -51,12 +51,11 @@ bool Parser::checkForParenthesis(vector<char> myVector){
 //cmdsToVector calls the makePtArr function for every element in the vector<string> container
 //then returns a new vector of tokens
 vector<Token*> Parser::cmdsToVector(){
-    //cout << "line 55: " << strContainer.at(0) << endl;
     printContainer();
+    printConnectors();
     vector<Token*> listOfCmds;
     Token* tk;
     
-    cout << checkForParenthesis(connectorCont) ? "true" : "false"; 
     if(checkForParenthesis(connectorCont) == false){
         for(unsigned int i = 0; i < strContainer.size(); i++){
             tk = new Token(makePtArr(strContainer.at(i)));
@@ -65,31 +64,33 @@ vector<Token*> Parser::cmdsToVector(){
     }
     else{
         int currentToken = 0;
-        cout << "line 67\n";
         for(int i = 0; i < connectorCont.size(); i++){
             if(connectorCont[i] == '('){
-                cout << "line 70\n";
                 i++;
                 tk = new Token();
                 while(connectorCont[i] != ')'){
-                    cout << "line 74\n";
                     tk->Tkconnectors.push_back(connectorCont[i]);
-                    //tk->tokens.push_back(makePtArr(strContainer.at(currentToken)));
-                    cout << "line 77: " << strContainer.at(currentToken) << endl;
                     tk->tokens.push_back(new Token(makePtArr(strContainer.at(currentToken))));
                     currentToken++;
                     i++;
                 }
-                cout << "line 82: " << strContainer.at(currentToken) << endl;
+               
                 tk->tokens.push_back(new Token(makePtArr(strContainer.at(currentToken))));
                 currentToken++;
                 listOfCmds.push_back(tk);
+                cout << "line 80: " << listOfCmds.size() << endl;
             }
             else{
-                if((connectorCont[i+1] != '(') && (connectorCont[i-1] != ')')){
+                cout << "line 84: " << endl;
+                cout << "testing[i+1]: " << connectorCont[i+1] << "_\n";
+                cout << "testing[i-1]: " << connectorCont[i-1] << "_\n";
+                cout << "testing[i]: " << connectorCont[i] << "_\n";
+
+                if((connectorCont[i+1] != '(')){ //&& (connectorCont[i-1] != ')')){
                     tk = new Token(makePtArr(strContainer.at(currentToken)));;
                     currentToken++;
                     listOfCmds.push_back(tk);    
+                    cout << "line 87: " << listOfCmds.size() << endl;
                      
                 }
             }
@@ -136,7 +137,7 @@ void Parser::printContainer(){
     cout << "String Container: " << endl;
     for(size_t i = 0; i < strContainer.size(); i++){
         if(strContainer.at(i) != "")
-          cout << i << ": " << strContainer.at(i) << endl;
+         cout << i << ": " << strContainer.at(i) << endl;
     }
 }
 
@@ -221,7 +222,7 @@ void Parser::standardize(){
 void Parser::removeEmptySpots(){
     vector<string> newVector;
     for(unsigned int i = 0; i < strContainer.size(); i++){
-        if(strContainer.at(i) != "")
+        if(strContainer.at(i) != "" && strContainer.at(i).length() > 1)
             newVector.push_back(strContainer.at(i));
     }
     strContainer = newVector;

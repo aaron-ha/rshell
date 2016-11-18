@@ -13,7 +13,6 @@ void Token::execute(){
     pid_t pid;
     pid_t waitId;
     int status;
-    std::cout << "line 13" << std::endl; 
     if(this->tokens.size() != 0){
        executeTree(tokens); 
     }
@@ -134,7 +133,6 @@ void Token::executeTree(std::vector<Token*> commands){
         }
         //this will be the first command which always executes
         else if(counter == 0){
-            std::cout << "It hit the execute in tree" << std::endl; 
             (*it)->execute();
             counter = 1;
             previousSuccessFlag = (*it)->successFlag;
@@ -166,7 +164,7 @@ void Token::executeTree(std::vector<Token*> commands){
             }
             connectorCounter++;
         }
-
+            successFlag = (*it)->successFlag && successFlag; 
     }
     
 }
