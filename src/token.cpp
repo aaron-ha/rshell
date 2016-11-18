@@ -1,24 +1,28 @@
 #include "token.h"
-Token::Token(){}
+Token::Token(){
+   
+}
 
 Token::Token(const char** argv) { //take in parsed argument 
     command = argv; 
 }
+
 
 //this will execute the program using fork and execvp
 void Token::execute(){
     pid_t pid;
     pid_t waitId;
     int status;
-    
-    
-    if(strcmp(command[0], "test") == 0 || strcmp(command[0], "[") == 0){
+    std::cout << "line 13" << std::endl; 
+    if(this->tokens.size() != 0){
+       executeTree(tokens); 
+    }
+    else if(strcmp(command[0], "test") == 0 || strcmp(command[0], "[") == 0){
         test(command); 
     }
     else{
         //forks into two processes
         pid = fork();
-        
         //There was an error during fork
         if (pid < 0){
     
@@ -113,4 +117,56 @@ void Token::test(const char** command){
            std:: cout << "(True)" << std::endl; 
         }
     }
+}
+
+void Token::executeTree(std::vector<Token*> commands){
+    
+    int counter = 0; //this is so that we will execute the first time regardless of the connector after it.
+    int connectorCounter = 0; //this will be used to iterate through the vector of connectors
+    bool previousSuccessFlag; //this keep track whether the last command executed successfully 
+    const char* ex  = "exit"; //exit command
+    for(std::vector<Token*>::iterator it = commands.begin() ; it != commands.end(); ++it){
+        //if the user entered in the exit command set the flag to 1 so that it the program will end
+        if(strcmp(ex, (*it)->command[0]) == 0){
+            //exitHit = 1; 
+            tokenComposite.exitHit = 1; 
+            break; 
+        }
+        //this will be the first command which always executes
+        else if(counter == 0){
+            std::cout << "It hit the execute in tree" << std::endl; 
+            (*it)->execute();
+            counter = 1;
+            previousSuccessFlag = (*it)->successFlag;
+
+        }
+        //if ; execcute regardless of previous success flag
+        else if(Tkconnectors[connectorCounter] == ';'){
+            (*it)->execute();
+            previousSuccessFlag = (*it)->successFlag;
+            connectorCounter++;
+
+        }
+        //if || the only execute if the previous command was not successfull 
+        else if(Tkconnectors[connectorCounter] == '|'){
+            if(previousSuccessFlag == 1){
+                break;
+            }
+            else{
+                (*it)->execute();
+                previousSuccessFlag = (*it)->successFlag;
+            }
+            connectorCounter++;
+        }
+        //&& will execute only if last command was successfull
+        else{
+            if(previousSuccessFlag == 1){
+                (*it)->execute();
+                previousSuccessFlag = (*it)->successFlag;
+            }
+            connectorCounter++;
+        }
+
+    }
+    
 }

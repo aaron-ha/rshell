@@ -3,27 +3,36 @@
 #include <iostream>
 #include <stdio.h>
 #include <unistd.h>
+#include <vector>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <stdlib.h>
 #include <string.h>
 #include "baseshell.h"
+#include "tokencomposite.h"
 
 //Token Class that will encapsulate the individual commands 
 class Token : public BaseShell
 {
 public:
+    //default
+    Token();
+    
     //constructor will take the character pointer array for us in execvp
     Token(const char** argv);
     
     //will execute the individual program
     void execute();
+    void executeTree(std::vector<Token*>); 
     //will test function
     void test(const char**);
-    
+    const char** command; 
     //use these two member variables the parser is in parenthesis
-    vector<Token> tokens; 
-    vector<char> connectors; 
+    std::vector<Token*> tokens; 
+    std::vector<char> Tkconnectors; 
+    
+private: 
+    TokenComposite tokenComposite; 
     
 };
 

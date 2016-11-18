@@ -7,7 +7,7 @@
 #include <algorithm>
 #include "token.h"
 using namespace std;
-
+class Token; 
 class Parser{
 public:
     Parser(){};
@@ -30,6 +30,7 @@ private:
     void standardize();
     void reverseStr();
     void cleanString();
+    void removeEmptySpots();
     
     bool checkForParenthesis(vector<char> myVector);
 };

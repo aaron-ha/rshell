@@ -10,7 +10,7 @@ public:
     //virtual function that the leaf and component node will inherit
     virtual void execute() = 0;
     //Will be used by the token class to hold the command
-    const char** command; 
+    //
 
 };
 

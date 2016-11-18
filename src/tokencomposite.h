@@ -17,11 +17,12 @@ class TokenComposite : public BaseShell
 public:
     TokenComposite();
         //container of BaseShell objects 
-    std::vector<BaseShell*> commands;
+    std::vector<Token*> commands;
         //loop that encapsualtes all the functions and will be used in main
     void shellLoop();
         //will iterate through commands vector and call execute on the leaf nodes
     void execute();
+    static int exitHit;
 private:
         //user input
     std::string command;
@@ -33,7 +34,7 @@ private:
         //vector will hold the connectors ; || &&
     std::vector<char> connectors;
         //static flag for exit command
-    static int exitHit;
+   
     static bool compositeSuccess; 
 
 };
