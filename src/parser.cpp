@@ -6,24 +6,72 @@ void Parser::parse(string cmd){
     this->divideString(cmd);
 }
 
+//NEW----------------------------------------------------------------------------------------------------------------
 //Getter for the connector container
 vector<char> Parser::getChContainer(){
-    return connectorCont;
+    vector<char> newCont;
+    for(unsigned int i = 0; i < connectorCont.size(); i++){
+        if (connectorCont[i] == '(')
+            while(connectorCont[i] != ')')
+                i++;
+        else
+            newCont.push_back(connectorCont[i]);
+    }
+    return newCont;
 }
 
+bool Parser::checkForParenthesis(vector<char> myVector){
+    
+    for(unsigned i = 0; i < myVector.size(); i++)
+        if (myVector[i] == '('){
+            return true;
+        }
+    return false;
+}
 //Commands To Vector function:
 //cmdsToVector calls the makePtArr function for every element in the vector<string> container
 //then returns a new vector of tokens
 vector<Token*> Parser::cmdsToVector(){
     vector<Token*> listOfCmds;
     Token* tk;
-    for(unsigned int i = 0; i < strContainer.size(); i++){
-        tk = new Token(makePtArr(strContainer.at(i)));
-        listOfCmds.push_back(tk);
+    
+    if(checkForParenthesis(connectorCont) == false){
+        for(unsigned int i = 0; i < strContainer.size(); i++){
+            tk = new Token(makePtArr(strContainer.at(i)));
+            listOfCmds.push_back(tk);
+        }
+    }
+    else{
+        int currentToken = 0;
+        for(unsigned int i = 0; i < connectorCont.size(); i++){
+            if(connectorCont[i] == '('){
+                i++;
+                tk = new Token();
+                while(connectorCont[i] != ')'){
+                    tk->Tkconnectors.push_back(connectorCont[i]);
+                    tk->tokens.push_back(new Token(makePtArr(strContainer.at(currentToken))));
+                    currentToken++;
+                    i++;
+                }
+               
+                tk->tokens.push_back(new Token(makePtArr(strContainer.at(currentToken))));
+                currentToken++;
+                listOfCmds.push_back(tk);
+            }
+            else{
+                if((connectorCont[i+1] != '(')){ 
+                    tk = new Token(makePtArr(strContainer.at(currentToken)));;
+                    currentToken++;
+                    listOfCmds.push_back(tk);
+                     
+                }
+            }
+        }
     }
     return listOfCmds;
 }
 
+//NEW----------------------------------------------------------------------------------------------------------------
 //make an Array of pointers function:
 //makePtArr takes a string and turns it into a character array pointer by
 //separating words from a string by using the space as a delimeter
@@ -58,9 +106,10 @@ const char** Parser::makePtArr(string str){
 //Prints the string container
 void Parser::printContainer(){
     cout << "String Container: " << endl;
-    for(size_t i = 0; i < strContainer.size(); i++)
-        cout << i << ": " << strContainer.at(i) << endl;
-
+    for(size_t i = 0; i < strContainer.size(); i++){
+        if(strContainer.at(i) != "")
+         cout << i << ": " << strContainer.at(i) << endl;
+    }
 }
 
 //Prints the connector container
@@ -101,6 +150,18 @@ vector<string> Parser::divideString(string str){
             newStr = newStr.substr(i+2, newStr.length());
             i = 0;
         }
+        else if(newStr[i] == '('){                         //Looks for "(" within the string
+            connectorCont.push_back('(');                   // ( will represent the ( connector
+            strContainer.push_back(newStr.substr(0, i));
+            newStr = newStr.substr(i+1, newStr.length());
+            i = 0;
+        }
+        else if(newStr[i] == ')'){                          //Looks for ")" within the string
+            connectorCont.push_back(')');                   // ) will represent the ) connector
+            strContainer.push_back(newStr.substr(0, i));
+            newStr = newStr.substr(i+1, newStr.length());
+            i = 0;
+        }
     }
     strContainer.push_back(newStr.substr(0, newStr.length()));
     standardize();                                          //cleans up the container
@@ -113,6 +174,17 @@ void Parser::standardize(){
     reverseStr();   //Reverses the string
     cleanString();  //removes the spaces in front of the string... which is actually the back of the string.
     reverseStr();   //Return string to default construction
+    removeEmptySpots();
+}
+
+//Removes empty vector spaces made by the parenthesis
+void Parser::removeEmptySpots(){
+    vector<string> newVector;
+    for(unsigned int i = 0; i < strContainer.size(); i++){
+        if(strContainer.at(i) != "" && strContainer.at(i).length() > 1)
+            newVector.push_back(strContainer.at(i));
+    }
+    strContainer = newVector;
 }
 
 //Removes all unnecessary spaces found before the string.

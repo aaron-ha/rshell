@@ -1,0 +1,10 @@
+exit
+echo A ; exit
+echo A || exit
+echo A && exit
+echo A && echo B || exit
+(exit)
+(echo A && exit) 
+(echo A || exit) && exit
+(echo A || echo B) && (echo C && exit)
+(echo A ; echo B && echo C) ; exit

@@ -12,4 +12,3 @@ int main() //call loop that will handle all the processes
     token.shellLoop();
     return 0;
 }
-

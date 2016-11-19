@@ -1,6 +1,6 @@
 # Compiler options
 CC=g++
-CFLAGS=-Wall -Werror -ansi -pedantic
+CFLAGS=-Wall -Werror -ansi -pedantic -Wno-unused-variable
 LDFLAGS=
 SRC_DIR=src
 SOURCES=$(SRC_DIR)/token.cpp $(SRC_DIR)/parser.cpp $(SRC_DIR)/tokencomposite.cpp $(SRC_DIR)/main.cpp
