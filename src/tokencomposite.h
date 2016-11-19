@@ -1,6 +1,8 @@
 #ifndef TOKENCOMPOSITE_H
 #define TOKENCOMPOSITE_H
 #include "baseshell.h"
+#include "parser.h"
+#include "token.h"
 #include <stdlib.h>
 #include <string>
 #include <vector>
@@ -8,8 +10,6 @@
 #include <pwd.h>
 #include <unistd.h>
 #include <iostream>
-#include "parser.h"
-#include "token.h"
 
 //Component class that has container of Token objects and will execute them
 class TokenComposite : public BaseShell
@@ -22,7 +22,6 @@ public:
     void shellLoop();
         //will iterate through commands vector and call execute on the leaf nodes
     void execute();
-    static int exitHit;
 private:
     //user input
     std::string command;
@@ -36,7 +35,7 @@ private:
         //static flag for exit command
    
     static bool compositeSuccess; 
-    bool validateString(string str); 
+    bool validateString(std::string str); 
     
 
 };

@@ -1,6 +1,8 @@
 #ifndef BASESHELL
 #define BASESHELL
 
+static int exitHit = 0;
+
 class BaseShell{
 
 public:

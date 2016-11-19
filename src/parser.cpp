@@ -5,25 +5,6 @@
 void Parser::parse(string cmd){
     this->divideString(cmd);
 }
-//OLD---------------------------------------------------------------------------------------------------
-// //Getter for the connector container
-// vector<char> Parser::getChContainer(){
-//     return connectorCont;
-// }
-
-// //Commands To Vector function:
-// //cmdsToVector calls the makePtArr function for every element in the vector<string> container
-// //then returns a new vector of tokens
-// vector<Token*> Parser::cmdsToVector(){
-//     vector<Token*> listOfCmds;
-//     Token* tk;
-//     for(unsigned int i = 0; i < strContainer.size(); i++){
-//         tk = new Token(makePtArr(strContainer.at(i)));
-//         listOfCmds.push_back(tk);
-//     }
-//     return listOfCmds;
-// }
-//OLD----------------------------------------------------------------------------------------------------------------
 
 //NEW----------------------------------------------------------------------------------------------------------------
 //Getter for the connector container
@@ -62,7 +43,7 @@ vector<Token*> Parser::cmdsToVector(){
     }
     else{
         int currentToken = 0;
-        for(int i = 0; i < connectorCont.size(); i++){
+        for(unsigned int i = 0; i < connectorCont.size(); i++){
             if(connectorCont[i] == '('){
                 i++;
                 tk = new Token();
@@ -78,15 +59,13 @@ vector<Token*> Parser::cmdsToVector(){
                 listOfCmds.push_back(tk);
             }
             else{
-                if((connectorCont[i+1] != '(')){ //&& (connectorCont[i-1] != ')')){
+                if((connectorCont[i+1] != '(')){ 
                     tk = new Token(makePtArr(strContainer.at(currentToken)));;
                     currentToken++;
-                    listOfCmds.push_back(tk);    
-                    cout << "line 87: " << listOfCmds.size() << endl;
+                    listOfCmds.push_back(tk);
                      
                 }
             }
-
         }
     }
     return listOfCmds;
@@ -176,19 +155,6 @@ vector<string> Parser::divideString(string str){
             strContainer.push_back(newStr.substr(0, i));
             newStr = newStr.substr(i+1, newStr.length());
             i = 0;
-            // connectorCont.push_back('(');                   // ( will represent the ( connector
-            // int temp = i;
-            // i++;
-            // while(newStr[i] != ')'){
-            //     i++;
-            // }
-            // connectorCont.push_back(')');
-            // newStr = newStr.substr(temp+1, i-1);
-            // cout << "newStr" << newStr << "|" << endl;
-            // strContainer.push_back(newStr);
-            // newStr = newStr.substr(i+1, newStr.length());
-            // cout << "newStr" << newStr << "|" << endl;
-            // i = 0;
         }
         else if(newStr[i] == ')'){                          //Looks for ")" within the string
             connectorCont.push_back(')');                   // ) will represent the ) connector
@@ -211,6 +177,7 @@ void Parser::standardize(){
     removeEmptySpots();
 }
 
+//Removes empty vector spaces made by the parenthesis
 void Parser::removeEmptySpots(){
     vector<string> newVector;
     for(unsigned int i = 0; i < strContainer.size(); i++){

@@ -1,10 +1,11 @@
 #include "token.h"
 Token::Token(){
-   
+    successFlag = true;
 }
 
 Token::Token(const char** argv) { //take in parsed argument 
     command = argv; 
+    successFlag = true;
 }
 
 
@@ -14,7 +15,7 @@ void Token::execute(){
     pid_t waitId;
     int status;
     if(this->tokens.size() != 0){
-       executeTree(tokens); 
+        executeTree(tokens); 
     }
     else if(strcmp(command[0], "test") == 0 || strcmp(command[0], "[") == 0){
         test(command); 
@@ -24,7 +25,7 @@ void Token::execute(){
         pid = fork();
         //There was an error during fork
         if (pid < 0){
-    
+
             perror("There was an error");
         }
         else if (pid == 0){
@@ -51,7 +52,6 @@ void Token::execute(){
             while (!WIFEXITED(status) && !WIFSIGNALED(status));
         }
     }
-    
 }
 
 void Token::test(const char** command){
@@ -103,41 +103,53 @@ void Token::test(const char** command){
         else{
             std::cout << "(False)" << std::endl; 
         }
-       
+
     }
     else{
-      if (stat(command[1], &sb) == -1) {
+        if (stat(command[1], &sb) == -1) {
             std::cout << "(False)" << std::endl; 
             successFlag = false;
             perror("File Status:");
-            
+
         }
         else{
-           std:: cout << "(True)" << std::endl; 
+            std:: cout << "(True)" << std::endl; 
         }
     }
 }
 
 void Token::executeTree(std::vector<Token*> commands){
-    
+
     int counter = 0; //this is so that we will execute the first time regardless of the connector after it.
     int connectorCounter = 0; //this will be used to iterate through the vector of connectors
     bool previousSuccessFlag; //this keep track whether the last command executed successfully 
     const char* ex  = "exit"; //exit command
     for(std::vector<Token*>::iterator it = commands.begin() ; it != commands.end(); ++it){
-        
+
         //this will be the first command which always executes
         if(counter == 0){
-            (*it)->execute();
-            counter = 1;
-            previousSuccessFlag = (*it)->successFlag;
+            //if the user entered in the exit command set the flag to 1 so that it the program will end
+            if(strcmp(ex, (*it)->command[0]) == 0){
+                exit(EXIT_SUCCESS); 
+            }
+            else{
+                (*it)->execute();
+                counter = 1;
+                previousSuccessFlag = (*it)->successFlag;
+            }
 
         }
         //if ; execcute regardless of previous success flag
         else if(Tkconnectors[connectorCounter] == ';'){
-            (*it)->execute();
-            previousSuccessFlag = (*it)->successFlag;
-            connectorCounter++;
+            //if the user entered in the exit command set the flag to 1 so that it the program will end
+            if(strcmp(ex, (*it)->command[0]) == 0){
+                exit(EXIT_SUCCESS);
+            }
+            else{
+                (*it)->execute();
+                previousSuccessFlag = (*it)->successFlag;
+                connectorCounter++;
+           }
 
         }
         //if || the only execute if the previous command was not successfull 
@@ -146,12 +158,11 @@ void Token::executeTree(std::vector<Token*> commands){
                 previousSuccessFlag = 1; 
             }
             else{
-                    //if the user entered in the exit command set the flag to 1 so that it the program will end
-                     if(strcmp(ex, (*it)->command[0]) == 0){
-                        tokenComposite.exitHit = 1; 
-                        break; 
-                     }
-                    else{
+                //if the user entered in the exit command set the flag to 1 so that it the program will end
+                if(strcmp(ex, (*it)->command[0]) == 0){
+                    exit(EXIT_SUCCESS); 
+                }
+                else{
                     (*it)->execute();
                     previousSuccessFlag = (*it)->successFlag;
                 }
@@ -161,12 +172,19 @@ void Token::executeTree(std::vector<Token*> commands){
         //&& will execute only if last command was successfull
         else{
             if(previousSuccessFlag == 1){
-                (*it)->execute();
-                previousSuccessFlag = (*it)->successFlag;
+                //if the user entered in the exit command set the flag to 1 so that it the program will end
+                if(strcmp(ex, (*it)->command[0]) == 0){
+                    // tokenComposite.exitHit = 1; 
+                    exitHit = 1;
+                    break; 
+                }
+                else{
+                    (*it)->execute();
+                    previousSuccessFlag = (*it)->successFlag;
+                }
             }
             connectorCounter++;
         }
-            successFlag = (*it)->successFlag && successFlag; 
+        successFlag = (*it)->successFlag && successFlag; 
     }
-    
 }

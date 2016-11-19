@@ -1,5 +1,5 @@
-#ifndef PARSER
-#define PARSER
+#ifndef PARSER_H
+#define PARSER_H
 #include <iostream>
 #include <vector>
 #include <cstring>
@@ -7,7 +7,9 @@
 #include <algorithm>
 #include "token.h"
 using namespace std;
-class Token; 
+
+class Token;
+
 class Parser{
 public:
     Parser(){};
