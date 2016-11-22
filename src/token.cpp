@@ -188,3 +188,7 @@ void Token::executeTree(std::vector<Token*> commands){
         successFlag = (*it)->successFlag && successFlag; 
     }
 }
+
+void Token::cd(const char** command){
+    
+}
