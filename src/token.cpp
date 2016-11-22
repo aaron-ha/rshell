@@ -191,4 +191,32 @@ void Token::executeTree(std::vector<Token*> commands){
 
 void Token::cd(const char** command){
     
+    //used for cd - swap
+    const char* temp; 
+    //if user enter in just cd
+    if(!command[1]){
+        if(chdir(getenv("HOME")) == -1 ){
+            perror("Error changing directores"); 
+        }
+    }
+    //if user enters in cd -
+    else if(command[1] == "-"){
+        if(chdir(getenv("OLDPWD")) == -1){
+            perror("Error changing directores");
+        }
+        temp = getenv("PWD");
+        setenv("PWD", getenv("OLDPWD")); 
+        setenv("OLDPWD", temp); 
+      
+    }
+    //if user enters in cd + path
+    else{
+        if(chdir(command[1])) == -1 ){
+            perror("Error changing directores"); 
+            exit(EXIT_FAILURE); 
+        }
+        setenv("OLDPWD", getenv("PWD")); 
+        setenv("PWD", command[1]); 
+    }
+    
 }
