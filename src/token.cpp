@@ -198,10 +198,15 @@ void Token::cd(const char** command){
     const char* temp; 
     //if user enter in just cd
     if(!command[1]){
-        std::cout << "line 198" << std::endl; 
+       
         if(chdir(getenv("HOME")) == -1 ){
             perror("Error changing directores"); 
             successFlag = false; 
+        }
+        else{
+             std::cout << "line 207" << std::endl; 
+             setenv("OLDPWD", getenv("PWD"), 1); 
+             setenv("PWD", getenv("HOME"), 1);
         }
     }
     //if user enters in cd -
