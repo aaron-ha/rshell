@@ -20,6 +20,9 @@ void Token::execute(){
     else if(strcmp(command[0], "test") == 0 || strcmp(command[0], "[") == 0){
         test(command); 
     }
+    else if(strcmp(command[0], "cd") == 0){
+        cd(command); 
+    }
     else{
         //forks into two processes
         pid = fork();
@@ -195,28 +198,37 @@ void Token::cd(const char** command){
     const char* temp; 
     //if user enter in just cd
     if(!command[1]){
+        std::cout << "line 198" << std::endl; 
         if(chdir(getenv("HOME")) == -1 ){
             perror("Error changing directores"); 
+            successFlag = false; 
         }
     }
     //if user enters in cd -
-    else if(command[1] == "-"){
+    else if(strcmp(command[1] , "-") == 0){
+        std::cout << "line 205" << std::endl; 
         if(chdir(getenv("OLDPWD")) == -1){
             perror("Error changing directores");
+            successFlag = false; 
         }
-        temp = getenv("PWD");
-        setenv("PWD", getenv("OLDPWD")); 
-        setenv("OLDPWD", temp); 
+        else{
+            temp = getenv("PWD");
+            setenv("PWD", getenv("OLDPWD"), 1); 
+            setenv("OLDPWD", temp, 1); 
+        }
       
     }
     //if user enters in cd + path
     else{
-        if(chdir(command[1])) == -1 ){
+        std::cout << "line 218" << std::endl; 
+        if(chdir(command[1]) == -1 ){
             perror("Error changing directores"); 
-            exit(EXIT_FAILURE); 
+            successFlag = false; 
         }
-        setenv("OLDPWD", getenv("PWD")); 
-        setenv("PWD", command[1]); 
+        else{
+            setenv("OLDPWD", getenv("PWD"), 1); 
+            setenv("PWD", command[1], 1); 
+        }
     }
     
 }
