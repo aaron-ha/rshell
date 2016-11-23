@@ -14,7 +14,9 @@ void TokenComposite::shellLoop()
         //output login and host name info
         std::cout << (login->pw_name);
         std::cout << "@";
-        std::cout << hostname << "$";
+        std::cout << hostname;
+        std::cout << getenv("PWD");
+        std::cout << "$";
         
         //get user input
         getline(cin, command);
