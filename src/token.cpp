@@ -1,4 +1,5 @@
 #include "token.h"
+#include <string>
 Token::Token(){
     successFlag = true;
 }
@@ -194,6 +195,11 @@ void Token::executeTree(std::vector<Token*> commands){
 
 void Token::cd(const char** command){
     
+    //this is the buffer for getcwd
+    char cwd[1024];
+    std::string str = getcwd(cwd, sizeof(cwd));
+    size_t pos = str.find_last_of("/\\");
+    std::string newStr = str.substr(pos+1);
     //used for cd - swap
     const char* temp; 
     //if user enter in just cd
@@ -223,13 +229,16 @@ void Token::cd(const char** command){
     }
     //if user enters in cd + path
     else{
-        if(chdir(command[1]) == -1 ){
-            perror("Error changing directores"); 
-            successFlag = false; 
-        }
-        else{
-            setenv("OLDPWD", getenv("PWD"), 1); 
-            setenv("PWD", command[1], 1); 
+        if(strcmp(newStr.c_str(), command[1]) != 0){
+            
+            if(chdir(command[1]) == -1 ){
+                perror("Error changing directores"); 
+                successFlag = false; 
+            }
+            else{
+                setenv("OLDPWD", getenv("PWD"), 1); 
+                setenv("PWD", getcwd(cwd, sizeof(cwd)), 1); 
+            }
         }
     }
     
