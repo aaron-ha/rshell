@@ -1,0 +1,15 @@
+cd
+cd - 
+cd ..
+ca
+cd valid/path
+cd nonvalid/path
+cd --
+echo hello && cd home
+ls -apples || cd /home
+(cd)
+(cd -)
+(cd valid/path)
+(cd nonvalid/path)
+(cd && echo hello)
+(Cd || echo hello)

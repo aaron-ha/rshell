@@ -9,7 +9,7 @@ void TokenComposite::shellLoop()
     login = getpwuid(getuid());
     //get user hostname
     gethostname(hostname, sizeof hostname);
-    
+    setenv("OLDPWD", getenv("PWD"), 1);
     while(exitHit == 0){
         //output login and host name info
         std::cout << (login->pw_name);
