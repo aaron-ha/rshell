@@ -26,6 +26,7 @@ public:
     void executeTree(std::vector<Token*>); 
     //will test function
     void test(const char**);
+    void cd(const char**); 
     const char** command; 
     //use these two member variables the parser is in parenthesis
     std::vector<Token*> tokens; 

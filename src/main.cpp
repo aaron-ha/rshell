@@ -3,7 +3,7 @@
 #include "token.h"
 #include "tokencomposite.h"
 #include "parser.h"
-
+#include <unistd.h>
 using namespace std;
 
 int main() //call loop that will handle all the processes 
@@ -12,3 +12,4 @@ int main() //call loop that will handle all the processes
     token.shellLoop();
     return 0;
 }
+

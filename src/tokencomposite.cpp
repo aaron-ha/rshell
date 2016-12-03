@@ -9,12 +9,15 @@ void TokenComposite::shellLoop()
     login = getpwuid(getuid());
     //get user hostname
     gethostname(hostname, sizeof hostname);
-    
+    char cwd[1024];
+    setenv("OLDPWD", getenv("PWD"), 1);
     while(exitHit == 0){
         //output login and host name info
         std::cout << (login->pw_name);
         std::cout << "@";
-        std::cout << hostname << "$";
+        std::cout << hostname;
+        std::cout << getcwd(cwd, sizeof(cwd));
+        std::cout << " $";
         
         //get user input
         getline(cin, command);

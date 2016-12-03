@@ -1,4 +1,5 @@
 #include "token.h"
+#include <string>
 Token::Token(){
     successFlag = true;
 }
@@ -19,6 +20,9 @@ void Token::execute(){
     }
     else if(strcmp(command[0], "test") == 0 || strcmp(command[0], "[") == 0){
         test(command); 
+    }
+    else if(strcmp(command[0], "cd") == 0){
+        cd(command); 
     }
     else{
         //forks into two processes
@@ -187,4 +191,55 @@ void Token::executeTree(std::vector<Token*> commands){
         }
         successFlag = (*it)->successFlag && successFlag; 
     }
+}
+
+void Token::cd(const char** command){
+    
+    //this is the buffer for getcwd
+    char cwd[1024];
+    std::string str = getcwd(cwd, sizeof(cwd));
+    size_t pos = str.find_last_of("/\\");
+    std::string newStr = str.substr(pos+1);
+    //used for cd - swap
+    const char* temp; 
+    //if user enter in just cd
+    if(!command[1]){
+       
+        if(chdir(getenv("HOME")) == -1 ){
+            perror("Error changing directores"); 
+            successFlag = false; 
+        }
+        else{
+             setenv("OLDPWD", getenv("PWD"), 1); 
+             setenv("PWD", getenv("HOME"), 1);
+        }
+    }
+    //if user enters in cd -
+    else if(strcmp(command[1] , "-") == 0){
+        if(chdir(getenv("OLDPWD")) == -1){
+            perror("Error changing directores");
+            successFlag = false; 
+        }
+        else{
+            temp = getenv("PWD");
+            setenv("PWD", getenv("OLDPWD"), 1); 
+            setenv("OLDPWD", temp, 1); 
+        }
+      
+    }
+    //if user enters in cd + path
+    else{
+        if(strcmp(newStr.c_str(), command[1]) != 0){
+            
+            if(chdir(command[1]) == -1 ){
+                perror("Error changing directores"); 
+                successFlag = false; 
+            }
+            else{
+                setenv("OLDPWD", getenv("PWD"), 1); 
+                setenv("PWD", getcwd(cwd, sizeof(cwd)), 1); 
+            }
+        }
+    }
+    
 }
