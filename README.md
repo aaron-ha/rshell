@@ -19,12 +19,7 @@ For assignment 3, Aaron handled parsing of parenthesis and brackets. He handled 
 functionality and logic of the test and precedence. To handle test, we simply created a new function. To handle precadence we added a `vector<Token*>` member variable to the `Token` class. When a parenthesis is detected, the vector is populated with `Token*` objects. This created a tree that will be iterated through in our `TokenComposite` execute function. 
 For cd, we did not have to touch the parser. 
 ## Bugs
-The command `help` continues to not work in our program. We believe this is because `help` is not a built in function and thus is not handled by `execvp`. 
 
-When running the scripts the script would sometimes go under an infinite loop (I believe this is because we didn't call exit, aside from exit test cases)
-
-Comparison between ints and size_types would cause occasional parse bugs. 
-
-Nested parenthesis do not work. 
+Commands in nested parenthesis do not always execute correctly. 
 
 GNU GENERAL PUBLIC LICENSE
