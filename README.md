@@ -4,7 +4,7 @@
 
 ## Summary and Requirements
 This is a c++ program that acts as a BASH Shell. It has the capability to execute all bash commands
-found in bin so it cannot do commands such as ```cd```. It also has the capabilty of handling mutliple commands using 
+found in bin as well as `cd`. It also has the capabilty of handling mutliple commands using 
 the BASH connectors ```||```, ```&&``` and ```;```. If the user enters `#` it will act as a comment and everything after it will be ignored. These connectors will determing if the command is executed based off
 of the previous commands success. The program will exit when the user hits "exit". The added functionality includes precedence and testing 
 of directories and files. The last added functionality adds the `cd` command. This includes `cd` which will take you to the home directory, `cd -` 
