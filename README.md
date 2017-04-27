@@ -1,6 +1,6 @@
-#CS100 Assignment 4 - rshell
+# CS100 Assignment 4 - rshell
 
-###Elijah Cain and Aaron Ha
+### Elijah Cain and Aaron Ha
 
 ## Summary and Requirements
 This is a c++ program that acts as a BASH Shell. It has the capability to execute all bash commands
